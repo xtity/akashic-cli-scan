@@ -17,6 +17,7 @@ export function getAudioDuration(filepath: string): Promise<number> {
 
 		return Promise.resolve(d);
 	case ".ogg":
+		console.warn("[deprecated] AAC is deprecated. Use MP4 instead of " + path.basename(filepath));
 		return new Promise((resolve, reject) => {
 			musicMetaData(fs.createReadStream(filepath), { duration: true }, (err: any, metadata: MM.Metadata) => {
 				if (err) {
