@@ -30,6 +30,7 @@ describe("Utilities for Configuration", function () {
 		expect(cnf._isAudioFilePath("hoge.ogg")).toBe(true);
 		expect(cnf._isAudioFilePath("hoge.wav")).toBe(false);
 		expect(cnf._isAudioFilePath("hoge.aac")).toBe(true);
+		expect(cnf._isAudioFilePath("hoge.mp4")).toBe(true);
 		expect(cnf._isAudioFilePath("hoge.txt.ogg")).toBe(true);
 		expect(cnf._isAudioFilePath("hoge.txt")).toBe(false);
 		expect(cnf._isAudioFilePath("hoge.ogg.txt")).toBe(false);
@@ -127,6 +128,7 @@ describe("Configuration", function () {
 	var DUMMY_1x1_PNG_DATA = fs.readFileSync(path.resolve(__dirname, "../fixtures/dummy1x1.png"));
 	var DUMMY_OGG_DATA = fs.readFileSync(path.resolve(__dirname, "../fixtures/dummy.ogg"));
 	var DUMMY_AAC_DATA = fs.readFileSync(path.resolve(__dirname, "../fixtures/dummy.aac"));
+	var DUMMY_MP4_DATA = fs.readFileSync(path.resolve(__dirname, "../fixtures/dummy.mp4"));
 
 	afterEach(function () {
 		mockfs.restore();
@@ -380,6 +382,7 @@ describe("Configuration", function () {
 		mockfs({
 			"audio": {
 				"dummy.ogg": DUMMY_OGG_DATA,
+				"dummy.mp4": DUMMY_MP4_DATA,
 				"dummy.aac": DUMMY_AAC_DATA
 			}
 		});
