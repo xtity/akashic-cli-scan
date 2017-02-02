@@ -6,7 +6,7 @@ import * as cmn from "@akashic/akashic-cli-commons";
 import { getAudioDuration } from "./getAudioDuration";
 
 export function _isImageFilePath(p: string): boolean { return /.*\.(png|gif|jpg|jpeg)$/i.test(p); }
-export function _isAudioFilePath(p: string): boolean { return /.*\.(ogg|aac)$/i.test(p); }
+export function _isAudioFilePath(p: string): boolean { return /.*\.(ogg|aac|mp4)$/i.test(p); }
 export function _isScriptAssetPath(p: string): boolean { return /.*\.(js|json)$/i.test(p); }
 export function _isTextAssetPath(p: string): boolean { return true; }  // no limitation...
 export function _isPackageJsonPath(p: string): boolean { return /.*[\/\\]package.json$/.test(p) || (p === "package.json"); }

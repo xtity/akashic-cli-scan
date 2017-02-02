@@ -30,6 +30,7 @@ describe("Utilities for Configuration", function () {
 		expect(cnf._isAudioFilePath("hoge.ogg")).toBe(true);
 		expect(cnf._isAudioFilePath("hoge.wav")).toBe(false);
 		expect(cnf._isAudioFilePath("hoge.aac")).toBe(true);
+		expect(cnf._isAudioFilePath("hoge.mp4")).toBe(true);
 		expect(cnf._isAudioFilePath("hoge.txt.ogg")).toBe(true);
 		expect(cnf._isAudioFilePath("hoge.txt")).toBe(false);
 		expect(cnf._isAudioFilePath("hoge.ogg.txt")).toBe(false);
@@ -127,6 +128,7 @@ describe("Configuration", function () {
 	var DUMMY_1x1_PNG_DATA = fs.readFileSync(path.resolve(__dirname, "../fixtures/dummy1x1.png"));
 	var DUMMY_OGG_DATA = fs.readFileSync(path.resolve(__dirname, "../fixtures/dummy.ogg"));
 	var DUMMY_AAC_DATA = fs.readFileSync(path.resolve(__dirname, "../fixtures/dummy.aac"));
+	var DUMMY_MP4_DATA = fs.readFileSync(path.resolve(__dirname, "../fixtures/dummy.mp4"));
 
 	afterEach(function () {
 		mockfs.restore();
@@ -309,7 +311,7 @@ describe("Configuration", function () {
 		expect(function(){conf.scanAssetsImage()}).toThrow();
 	});
 
-	it("scan audio assets info", function (done) {
+	it("scan audio assets info - ogg", function (done) {
 		var gamejson: any = {
 			assets: {
 				"dummyAudio": {
@@ -349,6 +351,46 @@ describe("Configuration", function () {
 		});
 	});
 
+	it("scan audio assets info - mp4(aac)", function (done) {
+		var gamejson: any = {
+			assets: {
+				"dummyAudio": {
+					"type": "audio",
+					"path": "audio/foo/dummy",
+					"global": true,
+				},
+				"dummyAudio2": {
+					"type": "audio",
+					"path": "audio/foo/z",
+					"global": true,
+				}
+			}
+		};
+
+		mockfs({
+			"game.json": JSON.stringify(gamejson),
+			"audio": {
+				"foo": {
+					"dummy.mp4": DUMMY_MP4_DATA,
+					"newDummy.mp4": DUMMY_MP4_DATA,
+					"z.mp4": DUMMY_MP4_DATA,
+				},
+			},
+		});
+
+		var conf = new cnf.Configuration({ content: gamejson, logger: nullLogger, basepath: process.cwd() });
+
+		expect(conf.getContent().assets["dummyAudio"].type).toBe("audio");
+		expect(conf.getContent().assets["newDummy"]).toBe(undefined);
+		conf.scanAssetsAudio().then(() => {
+			expect(conf.getContent().assets["dummyAudio"].type).toBe("audio");
+			expect(conf.getContent().assets["newDummy"].type).toBe("audio");
+			expect(conf.getContent().assets["newDummy"].systemId).toBe("sound");
+			expect(conf.getContent().assets["newDummy"].duration).toBe(302);
+			done();
+		});
+	});
+
 	it("scan audio assets info with conflicted asset type", function (done) {
 		var gamejson: any = {
 			assets: {
@@ -380,6 +422,7 @@ describe("Configuration", function () {
 		mockfs({
 			"audio": {
 				"dummy.ogg": DUMMY_OGG_DATA,
+				"dummy.mp4": DUMMY_MP4_DATA,
 				"dummy.aac": DUMMY_AAC_DATA
 			}
 		});
