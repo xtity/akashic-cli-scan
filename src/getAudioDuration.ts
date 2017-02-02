@@ -8,7 +8,7 @@ export function getAudioDuration(filepath: string): Promise<number> {
 	var ext = path.extname(filepath);
 	switch (ext) {
 	case ".aac":
-		console.warn("[deprecated] Using deprecated format. Use MP4 instead of AAC.");
+		console.warn("[deprecated] " + path.basename(filepath) + " uses deprecated format. Use MP4(AAC) instead of AAC.");
 		var d: number;
 		try {
 			d = aacDuration(filepath);
