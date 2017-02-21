@@ -9,12 +9,10 @@ export interface MockPromisedNpmParameterObject extends cmn.PromisedNpmParameter
 export class MockPromisedNpm extends cmn.PromisedNpm {
 	expectDependencies: {[key: string]: any};
 	expectDevDependencies: {[key: string]: any};
-	config: {[key: string]: any};
 	constructor(param: MockPromisedNpmParameterObject) {
 		super({});
 		this.expectDependencies = param.expectDependencies;
 		this.expectDevDependencies = param.expectDevDependencies;
-		this.config = {};
 	}
 	_load(): Promise<void> {
 		return Promise.resolve();
@@ -35,9 +33,5 @@ export class MockPromisedNpm extends cmn.PromisedNpm {
 				dependencies: result
 			});
 		})
-	}
-	setConfig(name: string, value: string): Promise<void> {
-		this.config[name] = value;
-		return Promise.resolve();
 	}
 }
