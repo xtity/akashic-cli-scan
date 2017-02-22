@@ -321,7 +321,7 @@ export class Configuration extends cmn.Configuration {
 			// これらのうち、dependenciesに直接書かれていない依存モジュールのファイルパスは、依存モジュールのバージョン・インストール順序によって不定である。
 			// よって、依存モジュールのファイルパスを解決する方法として、node_modules/直下にあるモジュール名（つまりpackage.jsonのdependenciesに書かれたモジュール）のみをcmn.NodeModules.listModuleFilesに渡す。
 			// これにより、requireチェーンによって依存モジュールのファイルパスが解決される。
-			.then((lsResult: cmn.NpmLsRsultObject) => {
+			.then((lsResult: cmn.NpmLsResultObject) => {
 				lsResult.dependencies = lsResult.dependencies || {};
 				return Object.keys(lsResult.dependencies);
 			});
