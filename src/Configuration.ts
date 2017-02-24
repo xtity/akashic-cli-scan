@@ -316,15 +316,14 @@ export class Configuration extends cmn.Configuration {
 
 	private _fetchDependencyPackageNames(): Promise<string[]> {
 		return Promise.resolve()
-			.then(() => Promise.all([
-				this._npm.setConfig("production", "true"),
-				this._npm.setConfig("quiet", "true")
-			]))
 			.then(() => this._npm.ls(true))
 			// lsResultオブジェクトは、package.jsonのdependenciesに書かれたモジュールと、それらの各依存モジュールをツリー構造で表したオブジェクトである。
 			// これらのうち、dependenciesに直接書かれていない依存モジュールのファイルパスは、依存モジュールのバージョン・インストール順序によって不定である。
 			// よって、依存モジュールのファイルパスを解決する方法として、node_modules/直下にあるモジュール名（つまりpackage.jsonのdependenciesに書かれたモジュール）のみをcmn.NodeModules.listModuleFilesに渡す。
 			// これにより、requireチェーンによって依存モジュールのファイルパスが解決される。
-			.then((lsResult: cmn.NpmLsRsultObject) => Object.keys(lsResult.dependencies));
+			.then((lsResult: cmn.NpmLsResultObject) => {
+				lsResult.dependencies = lsResult.dependencies || {};
+				return Object.keys(lsResult.dependencies);
+			});
 	}
 }
