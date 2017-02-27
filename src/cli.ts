@@ -11,6 +11,10 @@ commander
 	.version(ver);
 
 commander
+	.command("asset")
+	.outputHelp();
+
+commander
 	.command("asset [target]")
 	.description("Update 'assets' property of game.json")
 	.option("-C, --cwd <dir>", "The directory incluedes game.json")
