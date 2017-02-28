@@ -11,10 +11,6 @@ commander
 	.version(ver);
 
 commander
-	.command("asset")
-	.outputHelp();
-
-commander
 	.command("asset [target]")
 	.description("Update 'assets' property of game.json")
 	.option("-C, --cwd <dir>", "The directory incluedes game.json")
@@ -54,4 +50,10 @@ commander
 
 export function run(argv: string[]): void {
 	commander.parse(argv);
+
+	if (process.argv.length < 3
+		|| !process.argv[2].match(/^(asset|globalScripts).*/)) {
+		commander.help();
+	}
+
 }
