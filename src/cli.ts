@@ -50,4 +50,10 @@ commander
 
 export function run(argv: string[]): void {
 	commander.parse(argv);
+
+	if (argv.length < 3
+		|| !argv[2].match(/^(asset|globalScripts)$/)) {
+		commander.help();
+	}
+
 }
